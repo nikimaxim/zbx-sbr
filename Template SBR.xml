@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>5.0</version>
+    <date>2020-10-19T07:40:35Z</date>
+    <groups>
+        <group>
+            <name>Templates Users</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Template SBR</template>
+            <name>Template SBR</name>
+            <description>CITYRON SBR01</description>
+            <templates>
+                <template>
+                    <name>Template Module ICMP Ping</name>
+                </template>
+            </templates>
+            <groups>
+                <group>
+                    <name>Templates Users</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>Conditioners</name>
+                </application>
+                <application>
+                    <name>Information</name>
+                </application>
+            </applications>
+            <items>
+                <item>
+                    <name>SBR description</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>iso.3.6.1.2.1.1.5.0</snmp_oid>
+                    <key>sbr.description</key>
+                    <delay>1h</delay>
+                    <trends>0</trends>
+                    <value_type>CHAR</value_type>
+                    <description>Controller discription</description>
+                    <applications>
+                        <application>
+                            <name>Information</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>SBR emergency temperature</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>iso.3.6.1.4.1.47777.1.1.1.4.0</snmp_oid>
+                    <key>sbr.emergency.temperature</key>
+                    <delay>1h</delay>
+                    <units>°C</units>
+                    <description>Emergency temperature</description>
+                    <applications>
+                        <application>
+                            <name>Information</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>SBR error</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>iso.3.6.1.4.1.47777.1.1.1.1.0</snmp_oid>
+                    <key>sbr.error</key>
+                    <description>Controller errors</description>
+                    <applications>
+                        <application>
+                            <name>Information</name>
+                        </application>
+                    </applications>
+                    <valuemap>
+                        <name>SBR Controller Errors</name>
+                    </valuemap>
+                    <triggers>
+                        <trigger>
+                            <expression>{last(0)}&gt;0</expression>
+                            <recovery_mode>RECOVERY_EXPRESSION</recovery_mode>
+                            <recovery_expression>{last(0)}=0</recovery_expression>
+                            <name>There are problems on {HOST.NAME}</name>
+                            <priority>HIGH</priority>
+                            <manual_close>YES</manual_close>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>SBR error response time</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>iso.3.6.1.4.1.47777.1.1.1.7.0</snmp_oid>
+                    <key>sbr.error.response.time</key>
+                    <delay>1h</delay>
+                    <units>Min</units>
+                    <description>Error response time, in min</description>
+                    <applications>
+                        <application>
+                            <name>Information</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>SBR minimum number conditioners in operation</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>iso.3.6.1.4.1.47777.1.1.1.5.0</snmp_oid>
+                    <key>sbr.min.number.conditioner.in.operation</key>
+                    <delay>1h</delay>
+                    <units>Count</units>
+                    <description>The minimum number of air conditioners in operation</description>
+                    <applications>
+                        <application>
+                            <name>Information</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>SBR rotation time</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>iso.3.6.1.4.1.47777.1.1.1.6.0</snmp_oid>
+                    <key>sbr.rotation.time</key>
+                    <delay>1h</delay>
+                    <units>Hour</units>
+                    <description>Rotation time, in hours</description>
+                    <applications>
+                        <application>
+                            <name>Information</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>SBR switching temperature of additional conditioners</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>iso.3.6.1.4.1.47777.1.1.1.3.0</snmp_oid>
+                    <key>sbr.switching.temperature</key>
+                    <delay>1h</delay>
+                    <units>°C</units>
+                    <description>Switching temperature of additional air conditioners</description>
+                    <applications>
+                        <application>
+                            <name>Information</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>SBR temperature</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>iso.3.6.1.4.1.47777.1.1.1.20.0</snmp_oid>
+                    <key>sbr.temperature</key>
+                    <delay>5m</delay>
+                    <value_type>FLOAT</value_type>
+                    <units>°C</units>
+                    <description>Indoor temperature</description>
+                    <applications>
+                        <application>
+                            <name>Information</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>NOT_MATCHES_REGEX</type>
+                            <params>-1</params>
+                            <error_handler>CUSTOM_ERROR</error_handler>
+                            <error_handler_params>Not supported</error_handler_params>
+                        </step>
+                        <step>
+                            <type>MULTIPLIER</type>
+                            <params>0.1</params>
+                            <error_handler>CUSTOM_ERROR</error_handler>
+                            <error_handler_params>Not supported</error_handler_params>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <name>SBR uptime</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>iso.3.6.1.2.1.1.3.0</snmp_oid>
+                    <key>sbr.uptime</key>
+                    <delay>1h</delay>
+                    <units>uptime</units>
+                    <description>Controller uptime</description>
+                    <applications>
+                        <application>
+                            <name>Information</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>MULTIPLIER</type>
+                            <params>0.01</params>
+                            <error_handler>CUSTOM_ERROR</error_handler>
+                            <error_handler_params>Not supported</error_handler_params>
+                        </step>
+                    </preprocessing>
+                </item>
+            </items>
+            <discovery_rules>
+                <discovery_rule>
+                    <name>Conditioner Discovery</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>discovery[{#SNMPVALUE},iso.3.6.1.4.1.47777.1.1.2]</snmp_oid>
+                    <key>sbr.conditioner.discovery</key>
+                    <delay>1h</delay>
+                    <filter>
+                        <evaltype>AND</evaltype>
+                        <conditions>
+                            <condition>
+                                <macro>{#SNMPINDEX}</macro>
+                                <value>\d.1.0</value>
+                                <formulaid>A</formulaid>
+                            </condition>
+                            <condition>
+                                <macro>{#SNMPVALUE}</macro>
+                                <value>0</value>
+                                <operator>NOT_MATCHES_REGEX</operator>
+                                <formulaid>B</formulaid>
+                            </condition>
+                        </conditions>
+                    </filter>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>Conditioner No.{#SNMPVALUE} control</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>iso.3.6.1.4.1.47777.1.1.2.{#SNMPVALUE}.6.0</snmp_oid>
+                            <key>sbr.conditioner.control.[{#SNMPVALUE}]</key>
+                            <description>Auto/manual switching</description>
+                            <applications>
+                                <application>
+                                    <name>Conditioners</name>
+                                </application>
+                            </applications>
+                            <valuemap>
+                                <name>SBR Conditioner Control</name>
+                            </valuemap>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{diff()}=1</expression>
+                                    <name>Changing the operating mode on conditioner No.{#SNMPVALUE}</name>
+                                    <priority>INFO</priority>
+                                    <manual_close>YES</manual_close>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Conditioner No.{#SNMPVALUE} error</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>iso.3.6.1.4.1.47777.1.1.2.{#SNMPVALUE}.2.0</snmp_oid>
+                            <key>sbr.conditioner.error.[{#SNMPVALUE}]</key>
+                            <description>Conditioner errors</description>
+                            <applications>
+                                <application>
+                                    <name>Conditioners</name>
+                                </application>
+                            </applications>
+                            <valuemap>
+                                <name>SBR Conditioner Errors</name>
+                            </valuemap>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Conditioner No.{#SNMPVALUE} state</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>iso.3.6.1.4.1.47777.1.1.2.{#SNMPVALUE}.5.0</snmp_oid>
+                            <key>sbr.conditioner.state.[{#SNMPVALUE}]</key>
+                            <delay>5m</delay>
+                            <value_type>FLOAT</value_type>
+                            <description>Conditioner condition</description>
+                            <applications>
+                                <application>
+                                    <name>Conditioners</name>
+                                </application>
+                            </applications>
+                            <valuemap>
+                                <name>SBR Conditioner State</name>
+                            </valuemap>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Conditioner No.{#SNMPVALUE} input temperature</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>iso.3.6.1.4.1.47777.1.1.2.{#SNMPVALUE}.13.0</snmp_oid>
+                            <key>sbr.conditioner.temperature.in.[{#SNMPVALUE}]</key>
+                            <value_type>FLOAT</value_type>
+                            <units>°C</units>
+                            <description>Conditioner input temperature</description>
+                            <applications>
+                                <application>
+                                    <name>Conditioners</name>
+                                </application>
+                            </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>NOT_MATCHES_REGEX</type>
+                                    <params>-1</params>
+                                    <error_handler>CUSTOM_ERROR</error_handler>
+                                    <error_handler_params>Not supported</error_handler_params>
+                                </step>
+                                <step>
+                                    <type>MULTIPLIER</type>
+                                    <params>0.1</params>
+                                    <error_handler>CUSTOM_ERROR</error_handler>
+                                    <error_handler_params>Not supported</error_handler_params>
+                                </step>
+                            </preprocessing>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Conditioner No.{#SNMPVALUE} output temperature</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>iso.3.6.1.4.1.47777.1.1.2.{#SNMPVALUE}.14.0</snmp_oid>
+                            <key>sbr.conditioner.temperature.out.[{#SNMPVALUE}]</key>
+                            <value_type>FLOAT</value_type>
+                            <units>°C</units>
+                            <description>Conditioner output temperature</description>
+                            <applications>
+                                <application>
+                                    <name>Conditioners</name>
+                                </application>
+                            </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>NOT_MATCHES_REGEX</type>
+                                    <params>-1</params>
+                                    <error_handler>CUSTOM_ERROR</error_handler>
+                                    <error_handler_params>Not supported</error_handler_params>
+                                </step>
+                                <step>
+                                    <type>MULTIPLIER</type>
+                                    <params>0.1</params>
+                                    <error_handler>CUSTOM_ERROR</error_handler>
+                                    <error_handler_params>Not supported</error_handler_params>
+                                </step>
+                            </preprocessing>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Conditioner No.{#SNMPVALUE} uptime</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>iso.3.6.1.4.1.47777.1.1.2.{#SNMPVALUE}.7.0</snmp_oid>
+                            <key>sbr.conditioner.uptime.[{#SNMPVALUE}]</key>
+                            <delay>1h</delay>
+                            <units>uptime</units>
+                            <description>Duration of continuous operation of the air conditioner, in seconds</description>
+                            <applications>
+                                <application>
+                                    <name>Conditioners</name>
+                                </application>
+                            </applications>
+                        </item_prototype>
+                    </item_prototypes>
+                    <graph_prototypes>
+                        <graph_prototype>
+                            <name>Conditioner No.{#SNMPVALUE} temperature</name>
+                            <graph_items>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <color>FF0000</color>
+                                    <item>
+                                        <host>Template SBR</host>
+                                        <key>sbr.conditioner.temperature.in.[{#SNMPVALUE}]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>2</sortorder>
+                                    <color>4000FF</color>
+                                    <item>
+                                        <host>Template SBR</host>
+                                        <key>sbr.conditioner.temperature.out.[{#SNMPVALUE}]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>3</sortorder>
+                                    <color>00FF00</color>
+                                    <item>
+                                        <host>Template SBR</host>
+                                        <key>sbr.temperature</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                    </graph_prototypes>
+                </discovery_rule>
+            </discovery_rules>
+        </template>
+    </templates>
+    <triggers>
+        <trigger>
+            <expression>{Template SBR:sbr.temperature.last(0)}&gt;{Template SBR:sbr.emergency.temperature.last(0)}</expression>
+            <recovery_mode>RECOVERY_EXPRESSION</recovery_mode>
+            <recovery_expression>{Template SBR:sbr.temperature.last(0)}&lt;={Template SBR:sbr.emergency.temperature.last(0)} - 5</recovery_expression>
+            <name>High temperature on {HOST.NAME}</name>
+            <priority>WARNING</priority>
+            <manual_close>YES</manual_close>
+        </trigger>
+    </triggers>
+    <graphs>
+        <graph>
+            <name>SBR temperature</name>
+            <graph_items>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <color>1A7C11</color>
+                    <item>
+                        <host>Template SBR</host>
+                        <key>sbr.temperature</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+    </graphs>
+    <value_maps>
+        <value_map>
+            <name>SBR Conditioner Control</name>
+            <mappings>
+                <mapping>
+                    <value>0</value>
+                    <newvalue>Manual </newvalue>
+                </mapping>
+                <mapping>
+                    <value>1</value>
+                    <newvalue>Auto</newvalue>
+                </mapping>
+            </mappings>
+        </value_map>
+        <value_map>
+            <name>SBR Conditioner Errors</name>
+            <mappings>
+                <mapping>
+                    <value>0</value>
+                    <newvalue>Ok</newvalue>
+                </mapping>
+                <mapping>
+                    <value>1</value>
+                    <newvalue>RF module not responding</newvalue>
+                </mapping>
+                <mapping>
+                    <value>2</value>
+                    <newvalue>Сonditioner error</newvalue>
+                </mapping>
+                <mapping>
+                    <value>128</value>
+                    <newvalue>temperature sensor input error</newvalue>
+                </mapping>
+                <mapping>
+                    <value>256</value>
+                    <newvalue>temperature sensor output error</newvalue>
+                </mapping>
+                <mapping>
+                    <value>512</value>
+                    <newvalue>Close command not recorded</newvalue>
+                </mapping>
+                <mapping>
+                    <value>1024</value>
+                    <newvalue>Shutdown command not recorded</newvalue>
+                </mapping>
+            </mappings>
+        </value_map>
+        <value_map>
+            <name>SBR Conditioner State</name>
+            <mappings>
+                <mapping>
+                    <value>1</value>
+                    <newvalue>On</newvalue>
+                </mapping>
+                <mapping>
+                    <value>3</value>
+                    <newvalue>Off</newvalue>
+                </mapping>
+            </mappings>
+        </value_map>
+        <value_map>
+            <name>SBR Controller Errors</name>
+            <mappings>
+                <mapping>
+                    <value>0</value>
+                    <newvalue>Ok</newvalue>
+                </mapping>
+                <mapping>
+                    <value>1</value>
+                    <newvalue>Errors present</newvalue>
+                </mapping>
+                <mapping>
+                    <value>2</value>
+                    <newvalue>high temperature</newvalue>
+                </mapping>
+                <mapping>
+                    <value>4</value>
+                    <newvalue>high temperature and errors present</newvalue>
+                </mapping>
+            </mappings>
+        </value_map>
+    </value_maps>
+</zabbix_export>
