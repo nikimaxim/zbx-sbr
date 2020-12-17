@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>5.0</version>
-    <date>2020-10-19T07:40:35Z</date>
+    <date>2020-12-16T10:11:49Z</date>
     <groups>
         <group>
             <name>Templates Users</name>
@@ -11,7 +11,19 @@
         <template>
             <template>Template SBR</template>
             <name>Template SBR</name>
-            <description>CITYRON SBR01</description>
+            <description>#&#13;
+#    .VERSION&#13;
+#    0.2&#13;
+#&#13;
+#    .DESCRIPTION&#13;
+#    Author: Nikitin Maksim&#13;
+#    Github: https://github.com/nikimaxim/zbx-sbr.git&#13;
+#    Note: &#13;
+#&#13;
+#    .SUPPORTED&#13;
+#    CITYRON SBR01&#13;
+#    CITYRON SBR02&#13;
+#</description>
             <templates>
                 <template>
                     <name>Template Module ICMP Ping</name>
@@ -92,7 +104,45 @@
                     <key>sbr.error.response.time</key>
                     <delay>1h</delay>
                     <units>Min</units>
-                    <description>Error response time, in min</description>
+                    <description>Error response time, in minutes</description>
+                    <applications>
+                        <application>
+                            <name>Information</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>SBR firmware version</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>iso.3.6.1.4.1.47777.1.1.1.21.0</snmp_oid>
+                    <key>sbr.fw</key>
+                    <delay>1h</delay>
+                    <trends>0</trends>
+                    <value_type>CHAR</value_type>
+                    <description>Controller firmware version</description>
+                    <applications>
+                        <application>
+                            <name>Information</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{diff()}=1</expression>
+                            <name>Version of SBR was changed on {HOST.NAME}</name>
+                            <priority>INFO</priority>
+                            <manual_close>YES</manual_close>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>SBR ID</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>iso.3.6.1.4.1.47777.1.1.1.20.0</snmp_oid>
+                    <key>sbr.id</key>
+                    <delay>1h</delay>
+                    <trends>0</trends>
+                    <value_type>CHAR</value_type>
+                    <description>Controller ID</description>
                     <applications>
                         <application>
                             <name>Information</name>
@@ -144,7 +194,7 @@
                 <item>
                     <name>SBR temperature</name>
                     <type>SNMP_AGENT</type>
-                    <snmp_oid>iso.3.6.1.4.1.47777.1.1.1.20.0</snmp_oid>
+                    <snmp_oid>iso.3.6.1.4.1.47777.1.1.1.2.0</snmp_oid>
                     <key>sbr.temperature</key>
                     <delay>5m</delay>
                     <value_type>FLOAT</value_type>
@@ -222,6 +272,7 @@
                             <type>SNMP_AGENT</type>
                             <snmp_oid>iso.3.6.1.4.1.47777.1.1.2.{#SNMPVALUE}.6.0</snmp_oid>
                             <key>sbr.conditioner.control.[{#SNMPVALUE}]</key>
+                            <delay>10m</delay>
                             <description>Auto/manual switching</description>
                             <applications>
                                 <application>
@@ -256,11 +307,90 @@
                             </valuemap>
                         </item_prototype>
                         <item_prototype>
+                            <name>Conditioner No.{#SNMPVALUE} loss of power</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>iso.3.6.1.4.1.47777.1.1.2.{#SNMPVALUE}.23.0</snmp_oid>
+                            <key>sbr.conditioner.loss.power.[{#SNMPVALUE}]</key>
+                            <delay>1h</delay>
+                            <description>Loss of power</description>
+                            <applications>
+                                <application>
+                                    <name>Conditioners</name>
+                                </application>
+                            </applications>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Conditioner No.{#SNMPVALUE} module firmware version</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>iso.3.6.1.4.1.47777.1.1.2.{#SNMPVALUE}.20.0</snmp_oid>
+                            <key>sbr.conditioner.module.fw.[{#SNMPVALUE}]</key>
+                            <delay>1h</delay>
+                            <trends>0</trends>
+                            <value_type>CHAR</value_type>
+                            <description>Module firmware version</description>
+                            <applications>
+                                <application>
+                                    <name>Conditioners</name>
+                                </application>
+                            </applications>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{diff()}=1</expression>
+                                    <name>Version of SBR module was changed on {HOST.NAME}</name>
+                                    <priority>INFO</priority>
+                                    <manual_close>YES</manual_close>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Conditioner No.{#SNMPVALUE} module signal level</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>iso.3.6.1.4.1.47777.1.1.2.{#SNMPVALUE}.21.0</snmp_oid>
+                            <key>sbr.conditioner.module.signal.level.[{#SNMPVALUE}]</key>
+                            <delay>1h</delay>
+                            <value_type>FLOAT</value_type>
+                            <units>dbm</units>
+                            <description>Module signal level</description>
+                            <applications>
+                                <application>
+                                    <name>Conditioners</name>
+                                </application>
+                            </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>REGEX</type>
+                                    <params>(-\d+)
+\1</params>
+                                    <error_handler>CUSTOM_ERROR</error_handler>
+                                    <error_handler_params>Not supported</error_handler_params>
+                                </step>
+                                <step>
+                                    <type>NOT_MATCHES_REGEX</type>
+                                    <params>-255</params>
+                                    <error_handler>CUSTOM_ERROR</error_handler>
+                                    <error_handler_params>Not supported</error_handler_params>
+                                </step>
+                            </preprocessing>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>Conditioner No.{#SNMPVALUE} operating time</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>iso.3.6.1.4.1.47777.1.1.2.{#SNMPVALUE}.22.0</snmp_oid>
+                            <key>sbr.conditioner.operating.time.[{#SNMPVALUE}]</key>
+                            <delay>1h</delay>
+                            <units>uptime</units>
+                            <description>Full operating time</description>
+                            <applications>
+                                <application>
+                                    <name>Conditioners</name>
+                                </application>
+                            </applications>
+                        </item_prototype>
+                        <item_prototype>
                             <name>Conditioner No.{#SNMPVALUE} state</name>
                             <type>SNMP_AGENT</type>
                             <snmp_oid>iso.3.6.1.4.1.47777.1.1.2.{#SNMPVALUE}.5.0</snmp_oid>
                             <key>sbr.conditioner.state.[{#SNMPVALUE}]</key>
-                            <delay>5m</delay>
                             <value_type>FLOAT</value_type>
                             <description>Conditioner condition</description>
                             <applications>
@@ -329,6 +459,29 @@
                             </preprocessing>
                         </item_prototype>
                         <item_prototype>
+                            <name>Conditioner No.{#SNMPVALUE} time without connecting</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>iso.3.6.1.4.1.47777.1.1.2.{#SNMPVALUE}.24.0</snmp_oid>
+                            <key>sbr.conditioner.time.without.connecting.[{#SNMPVALUE}]</key>
+                            <delay>1h</delay>
+                            <value_type>FLOAT</value_type>
+                            <units>uptime</units>
+                            <description>Time without connecting</description>
+                            <applications>
+                                <application>
+                                    <name>Conditioners</name>
+                                </application>
+                            </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>MULTIPLIER</type>
+                                    <params>0.001</params>
+                                    <error_handler>CUSTOM_ERROR</error_handler>
+                                    <error_handler_params>Not supported</error_handler_params>
+                                </step>
+                            </preprocessing>
+                        </item_prototype>
+                        <item_prototype>
                             <name>Conditioner No.{#SNMPVALUE} uptime</name>
                             <type>SNMP_AGENT</type>
                             <snmp_oid>iso.3.6.1.4.1.47777.1.1.2.{#SNMPVALUE}.7.0</snmp_oid>
@@ -344,6 +497,19 @@
                         </item_prototype>
                     </item_prototypes>
                     <graph_prototypes>
+                        <graph_prototype>
+                            <name>Conditioner No.{#SNMPVALUE} module signal level</name>
+                            <graph_items>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <color>A54F10</color>
+                                    <item>
+                                        <host>Template SBR</host>
+                                        <key>sbr.conditioner.module.signal.level.[{#SNMPVALUE}]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
                         <graph_prototype>
                             <name>Conditioner No.{#SNMPVALUE} temperature</name>
                             <graph_items>
@@ -454,12 +620,16 @@
             <name>SBR Conditioner State</name>
             <mappings>
                 <mapping>
+                    <value>0</value>
+                    <newvalue>Auto</newvalue>
+                </mapping>
+                <mapping>
                     <value>1</value>
-                    <newvalue>On</newvalue>
+                    <newvalue>Cool</newvalue>
                 </mapping>
                 <mapping>
                     <value>3</value>
-                    <newvalue>Off</newvalue>
+                    <newvalue>Stop</newvalue>
                 </mapping>
             </mappings>
         </value_map>

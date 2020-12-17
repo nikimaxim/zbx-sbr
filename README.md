@@ -3,8 +3,10 @@
 
 ### Usage
 #### Requirements:
-- Controller: SBR01
-- Protocol: SNMP version 2
+- Controller: 
+  - SBR01
+  - SBR02  
+- Protocol: SNMP v1/v2c
 
 #### Import zabbix template:
 - **github**/Template SBR.xml
