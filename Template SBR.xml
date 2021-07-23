@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>5.0</version>
-    <date>2020-12-16T10:11:49Z</date>
+    <date>2021-07-23T08:56:09Z</date>
     <groups>
         <group>
             <name>Templates Users</name>
@@ -13,7 +13,7 @@
             <name>Template SBR</name>
             <description>#&#13;
 #    .VERSION&#13;
-#    0.2&#13;
+#    0.3&#13;
 #&#13;
 #    .DESCRIPTION&#13;
 #    Author: Nikitin Maksim&#13;
@@ -194,7 +194,7 @@
                 <item>
                     <name>SBR temperature</name>
                     <type>SNMP_AGENT</type>
-                    <snmp_oid>iso.3.6.1.4.1.47777.1.1.1.2.0</snmp_oid>
+                    <snmp_oid>iso.3.6.1.4.1.47777.1.1.1.12.0</snmp_oid>
                     <key>sbr.temperature</key>
                     <delay>5m</delay>
                     <value_type>FLOAT</value_type>
